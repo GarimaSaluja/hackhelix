@@ -235,6 +235,25 @@ if st.session_state.get("do_audit") and st.session_state.get("doc"):
         st.markdown(f'<div class="stat-pill"><div class="stat-num" style="color:#e74c3c">{len(hallucinated)}</div><div style="color:#666;font-size:0.8rem">HALLUCINATIONS ❌</div></div>', unsafe_allow_html=True)
 
     st.markdown("---")
+
+    import plotly.graph_objects as go
+    fig = go.Figure(data=[go.Pie(
+        labels=['Verified ✅', 'Unverified ⚠️', 'Hallucination ❌'],
+        values=[len(verified), len(unverified), len(hallucinated)],
+        hole=0.5,
+        marker_colors=['#40916c', '#e9a825', '#d62828'],
+        textfont_size=13,
+    )])
+    fig.update_layout(
+        showlegend=True,
+        margin=dict(t=20, b=20, l=20, r=20),
+        height=300,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(family='DM Sans'),
+        legend=dict(orientation='v', x=1, y=0.5)
+    )
+    st.plotly_chart(fig, use_container_width=True)
     st.markdown("### 🧾 Claim-by-Claim Audit Trail")
 
     tab_all, tab_v, tab_u, tab_h = st.tabs(["All Claims", "✅ Verified", "⚠️ Unverified", "❌ Hallucinations"])
